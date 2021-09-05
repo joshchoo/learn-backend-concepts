@@ -11,7 +11,7 @@ test:
 	curl http://localhost:8080
 
 stop:
-	docker stop nginx-demo 2> /dev/null
+	docker stop nginx-demo
 
 teardown:
 	docker rmi `docker images --quiet nginx`

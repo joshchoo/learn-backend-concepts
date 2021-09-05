@@ -4,3 +4,4 @@
 
 - curl
 - docker
+- go

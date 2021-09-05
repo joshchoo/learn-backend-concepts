@@ -10,4 +10,4 @@ FROM alpine
 
 COPY --from=build /app/main /app/main
 
-CMD ["/app/main"]
+ENTRYPOINT ["/app/main"]
