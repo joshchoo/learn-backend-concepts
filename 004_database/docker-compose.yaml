@@ -1,0 +1,22 @@
+version: "3"
+services:
+  server:
+    build: "./server"
+    ports:
+      - "9000:9000"
+    env_file: local.env
+    restart: "on-failure"
+    depends_on:
+      - "database"
+
+  database:
+    image: "postgres:13"
+    restart: "always"
+    environment:
+      POSTGRES_USER: "developer"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "default_db"
+    volumes:
+      - "./database-data.ignored/:/var/lib/postgresql/data/"
+    ports:
+      - "5432:5432"
