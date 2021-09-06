@@ -1,0 +1,31 @@
+version: "3"
+services:
+  load_balancer:
+    image: "nginx:1"
+    restart: "always"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./load_balancer/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - "server1"
+      - "server2"
+      - "server3"
+  server1:
+    build: "./server"
+    expose:
+      - "9000"
+    environment:
+      - ID="server1"
+  server2:
+    build: "./server"
+    environment:
+      - ID="server2"
+    expose:
+      - "9000"
+  server3:
+    build: "./server"
+    environment:
+      - ID="server3"
+    expose:
+      - "9000"

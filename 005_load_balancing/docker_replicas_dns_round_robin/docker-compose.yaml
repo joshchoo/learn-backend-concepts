@@ -1,0 +1,24 @@
+version: "3"
+services:
+  load_balancer:
+    image: "nginx:1"
+    restart: "always"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./load_balancer/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - "server"
+  server:
+    build: "./server"
+    deploy:
+      # Let Docker Compose spawn multiple instances.
+      # Docker uses DNS Round Robin to load balance: https://medium.com/@lherrera/poor-mans-load-balancing-with-docker-2be014983e5
+      # Nginx doesn't know how many server instances there are.
+      replicas: 3
+    expose:
+      - "9000"
+    # We cannot expose ports and have multiple replicas because only one replica will map to the port, while the other replicas will fail.
+    # This is why we still need a load balancer in front of the replicas.
+    # ports:
+    #   - "9000:9000"

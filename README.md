@@ -5,3 +5,4 @@
 - curl
 - docker
 - go
+- make
