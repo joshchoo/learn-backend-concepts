@@ -1,0 +1,14 @@
+version: "3"
+services:
+  server4:
+    build: "./server"
+    expose:
+      - "9000"
+    environment:
+      - ID="server4"
+  server5:
+    build: "./server"
+    environment:
+      - ID="server5"
+    expose:
+      - "9000"
