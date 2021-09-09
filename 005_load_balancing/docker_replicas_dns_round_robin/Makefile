@@ -1,5 +1,5 @@
 start:
-	docker-compose up --build
+	docker-compose up --build --detach
 
 inspect:
 	docker-compose ps
