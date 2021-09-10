@@ -15,17 +15,11 @@ services:
     build: "./server"
     expose:
       - "9000"
-    environment:
-      - ID="server1"
   server2:
     build: "./server"
-    environment:
-      - ID="server2"
     expose:
       - "9000"
   server3:
     build: "./server"
-    environment:
-      - ID="server3"
     expose:
       - "9000"

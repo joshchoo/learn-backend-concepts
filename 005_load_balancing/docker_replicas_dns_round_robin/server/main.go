@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
-	"strconv"
+	"os"
 	"time"
 )
 
@@ -15,29 +14,27 @@ type Response struct {
 	Timestamp time.Time `json:"timestamp"`
 }
 
-var id string
-
-func getId() string {
-	return id
+func getHostname() string {
+	hn, err := os.Hostname()
+	if err != nil {
+		hn = "unknown"
+	}
+	return hn
 }
 
 func main() {
-	// Init random ID
-	rand.Seed(time.Now().UnixNano())
-	id = strconv.Itoa(rand.Intn(1000))
-
 	http.HandleFunc("/", rootHandler)
-	fmt.Printf("[%s] Running on port 9000...\n", getId())
+	fmt.Printf("[%s] Running on port 9000...\n", getHostname())
 	if err := http.ListenAndServe(":9000", nil); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	id := getId()
-	log.Printf("[%s] %s %s\n", id, r.Method, r.RequestURI)
+	hostname := getHostname()
+	log.Printf("[%s] %s %s\n", hostname, r.Method, r.RequestURI)
 	payload := Response{
-		Message:   fmt.Sprintf("[%s] Hello!", id),
+		Message:   fmt.Sprintf("[%s] Hello!", hostname),
 		Timestamp: time.Now(),
 	}
 	w.Header().Set("Content-Type", "application/json")

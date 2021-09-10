@@ -16,17 +16,17 @@ type Response struct {
 
 func main() {
 	http.HandleFunc("/", rootHandler)
-	fmt.Printf("[%s] Running on port 9000...\n", getId())
+	fmt.Printf("[%s] Running on port 9000...\n", getHostname())
 	if err := http.ListenAndServe(":9000", nil); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	id := getId()
-	log.Printf("[%s] %s %s\n", id, r.Method, r.RequestURI)
+	hostname := getHostname()
+	log.Printf("[%s] %s %s\n", hostname, r.Method, r.RequestURI)
 	payload := Response{
-		Message:   fmt.Sprintf("[%s] Hello!", id),
+		Message:   fmt.Sprintf("[%s] Hello!", hostname),
 		Timestamp: time.Now(),
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -37,10 +37,10 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getId() string {
-	appId := os.Getenv("ID")
-	if appId == "" {
-		appId = "unknown"
+func getHostname() string {
+	hn, err := os.Hostname()
+	if err != nil {
+		hn = "unknown"
 	}
-	return appId
+	return hn
 }
